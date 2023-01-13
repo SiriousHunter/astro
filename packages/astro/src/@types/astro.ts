@@ -198,6 +198,13 @@ export interface AstroGlobal extends AstroGlobalPartial {
 		 */
 		render(slotName: string, args?: any[]): Promise<string>;
 	};
+
+	/**
+	 * Object provided by the server (**SSR Only**).
+	 *
+	 * [Astro reference](https://docs.astro.build/en/guides/server-side-rendering/#astrocontext)
+	 */
+	context: any;
 }
 
 export interface AstroGlobalPartial {
@@ -936,6 +943,7 @@ type Body = string;
 export interface APIContext {
 	params: Params;
 	request: Request;
+	context: any;
 }
 
 export interface EndpointOutput {

@@ -5,7 +5,16 @@ import { getParamsAndProps, GetParamsAndPropsError } from '../render/core.js';
 
 export type EndpointOptions = Pick<
 	RenderOptions,
-	'logging' | 'origin' | 'request' | 'route' | 'routeCache' | 'pathname' | 'route' | 'site' | 'ssr'
+	| 'logging'
+	| 'origin'
+	| 'request'
+	| 'route'
+	| 'routeCache'
+	| 'pathname'
+	| 'route'
+	| 'site'
+	| 'ssr'
+	| 'context'
 >;
 
 type EndpointCallResult =
@@ -22,6 +31,7 @@ export async function call(
 	mod: EndpointHandler,
 	opts: EndpointOptions
 ): Promise<EndpointCallResult> {
+	const context = opts.context;
 	const paramsAndPropsResp = await getParamsAndProps({ ...opts, mod: mod as any });
 
 	if (paramsAndPropsResp === GetParamsAndPropsError.NoMatchingStaticPath) {
@@ -31,7 +41,7 @@ export async function call(
 	}
 	const [params] = paramsAndPropsResp;
 
-	const response = await renderEndpoint(mod, opts.request, params);
+	const response = await renderEndpoint(mod, opts.request, params, context);
 
 	if (response instanceof Response) {
 		return {
